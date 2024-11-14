@@ -1,0 +1,9 @@
+<div class="container mt-3 bg-light p-4">
+<h2>Add a new bookmark</h2>
+  <%= simple_form_for [@list, @bookmark] do |f| %>
+    <%= f.association :movie %>
+    <%= f.input :comment %>
+    <%= f.submit "Add", class: 'btn btn-primary my-4' %>
+    <%= link_to "Cancel", list_path(@list), class: 'btn btn-danger text-white'%>
+  <% end %>
+</div>
