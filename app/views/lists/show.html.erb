@@ -5,23 +5,32 @@
 </div>
 
 
-
 <div class="container">
   <div class="p-3">
      <div class="btn btn-success">
-      <%= link_to 'Add a bookmark', new_list_bookmark_path(@list), :class => "btn text-white" %>
+      <%= link_to 'Add a bookmark', new_list_bookmark_path(@list), :class => "btn text-white btn-sm" %>
     </div>
   </div>
 <div>
 
-<% @list.bookmarks.each do |bookmark| %>
-<div class="card" style="width: 18rem;">
-  <img src="https://images.unsplash.com/photo-1682267825186-da88784ec9aa?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2luZW1hJTIwYmxhY2slMjBhbmQlMjB3aGl0ZXxlbnwwfDB8MHx8fDA%3D" class="card-img-top" alt="image">
-  <div class="card-body">
-    <h5 class="card-title"><%= bookmark.movie.title %></h5>
-    <p class="card-text"><%= bookmark.comment %></p>
-    <%= link_to "🗑️", bookmark_path(bookmark), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}%>
+<div class="row my-2">
+    <% @list.movies.each do |movie| %>
+      <% bookmark = Bookmark.find_by(list: @list, movie: movie) %>
+      <div class="col-12 col-sm-6 mb-4" data-aos="zoom-in">
+        <div class="bg-white rounded shadow h-100">
+          <%= image_tag movie.poster_url, alt: movie.title, class: "movie-img rounded-top" %>
+          <div class="p-3 rounded-bottom d-flex flex-column">
+            <strong><%= movie.title %> <span class="text-muted font-weight-normal">• <%= movie.rating %> <i class="fas fa-star star-yellow"></i></span></strong>
+            <small class="text-muted"><%= movie.overview %></small>
+            <div class="d-flex align-items-end justify-content-between pt-4">
+              <div>
+                <i class="fas fa-quote-left me-2"></i><small class="flex-grow-1"><%= bookmark.comment %></small>
+              </div>
+              <small class="text-right flex-shrink-0"><%= link_to "delete", bookmark_path(bookmark), data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to remove #{movie.title} from your #{@list.name} list"}, class: 'text-danger' %></small>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>
-<% end %>
-
